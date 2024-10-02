@@ -2,6 +2,7 @@ name: MudkipsLib
 version: '1.0-SNAPSHOT'
 main: us.mudkip989.mods.mudkipsLib.MudkipsLib
 api-version: '1.21'
+depend: [ ProtocolLib ]
 commands:
   mlib:
     usage: /<command>

@@ -22,7 +22,7 @@ public final class MudkipsLib extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        instance = this;
         PluginManager pm = Bukkit.getPluginManager();
         this.getCommand("mlib").setExecutor(new Commands());
 
