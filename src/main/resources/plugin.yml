@@ -1,0 +1,10 @@
+name: MudkipsLib
+version: '1.0-SNAPSHOT'
+main: us.mudkip989.mods.mudkipsLib.MudkipsLib
+api-version: '1.21'
+commands:
+  mlib:
+    usage: /<command>
+    description: Empty Text.
+    aliases: [ml,fish]
+
