@@ -23,9 +23,9 @@ public class Game {
         gameID = UUID.randomUUID();
         players = new ArrayList<>();
         disp = MudkipsLib.instance.getServer().getWorld("world").spawn(location, ItemDisplay.class);
-        ItemMeta meta = new ItemStack(Material.PAPER).getItemMeta();
+        ItemMeta meta = new ItemStack(Material.BOOK).getItemMeta();
         meta.setCustomModelData(1);
-        ItemStack stack = new ItemStack(Material.PAPER);
+        ItemStack stack = new ItemStack(Material.BOOK);
         stack.setItemMeta(meta);
         disp.setItemStack(stack);
         disp.setTransformationMatrix(new Matrix4f(

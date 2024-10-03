@@ -25,6 +25,7 @@ public final class MudkipsLib extends JavaPlugin {
         instance = this;
         PluginManager pm = Bukkit.getPluginManager();
         this.getCommand("mlib").setExecutor(new Commands());
+        games = new ArrayList<>();
 
         // Plugin startup logic
 
