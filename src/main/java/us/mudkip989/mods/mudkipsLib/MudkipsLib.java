@@ -1,8 +1,6 @@
 package us.mudkip989.mods.mudkipsLib;
 
 import com.google.gson.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.bukkit.*;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
