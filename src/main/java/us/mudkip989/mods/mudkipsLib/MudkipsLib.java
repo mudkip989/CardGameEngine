@@ -22,8 +22,6 @@ public final class MudkipsLib extends JavaPlugin {
 
     public static Logger logger;
 
-    public static EntityHider hider;
-
 
 
     @Override
@@ -35,7 +33,6 @@ public final class MudkipsLib extends JavaPlugin {
         logger = Logger.getLogger("MudkipsLib");
         this.getCommand("mlib").setExecutor(new Commands());
         games = new HashMap<>();
-        hider = new EntityHider(instance, EntityHider.Policy.BLACKLIST);
 
         // Plugin startup logic
 

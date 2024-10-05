@@ -41,6 +41,11 @@ public class Game {
         MudkipsLib.games.put(gameID, this);
     }
 
+//    Add Functions:
+//    -removePlayer
+//    -resetGame
+//    -startGame
+
 
     public void runEvent(String event, String args){
 
@@ -58,8 +63,12 @@ public class Game {
 
                 break;
             case "toggle":
-
-                MudkipsLib.hider.toggleEntity(Bukkit.getPlayer(args), disp);
+                Player p = Bukkit.getPlayer(args);
+                if(p.canSee(disp)) {
+                    p.hideEntity(MudkipsLib.instance, disp);
+                }else{
+                    p.showEntity(MudkipsLib.instance, disp);
+                }
 
                 break;
             default:

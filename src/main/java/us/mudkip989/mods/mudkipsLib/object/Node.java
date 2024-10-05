@@ -13,7 +13,7 @@ public class Node {
     public boolean faceUp, stackShowsHeight;
 
 
-    public static UUID parseValuefromEntity(Entity e, String key){
+    public static String parseValuefromEntity(Entity e, String key){
         Set<String> tags = e.getScoreboardTags();
 
         String val = null;
@@ -26,7 +26,7 @@ public class Node {
 
         }
 
-        return UUID.fromString(val);
+        return val;
     }
 
 
