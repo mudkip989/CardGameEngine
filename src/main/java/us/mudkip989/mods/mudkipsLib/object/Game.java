@@ -4,15 +4,13 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
-import org.bukkit.scheduler.*;
 import org.joml.*;
 import us.mudkip989.mods.mudkipsLib.*;
-import us.mudkip989.mods.mudkipsLib.extlibs.*;
 
 import java.util.*;
 
 public class Game {
-    private UUID gameID;
+    private final UUID gameID;
     public List<Player> players;
     public ItemDisplay disp;
     public Interaction inter;
@@ -23,7 +21,7 @@ public class Game {
 
         gameID = UUID.randomUUID();
         players = new ArrayList<>();
-        disp = MudkipsLib.instance.getServer().getWorld("world").spawn(location, ItemDisplay.class);
+        disp = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(location, ItemDisplay.class);
         ItemMeta meta = new ItemStack(Material.BOOK).getItemMeta();
         meta.setCustomModelData(18);
         ItemStack stack = new ItemStack(Material.BOOK);
@@ -34,7 +32,7 @@ public class Game {
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1));
-        inter = MudkipsLib.instance.getServer().getWorld("world").spawn(location, Interaction.class);
+        inter = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(location, Interaction.class);
         inter.setInteractionHeight(1);
         inter.setInteractionWidth(1);
         inter.addScoreboardTag("interactable");
