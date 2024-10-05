@@ -1,16 +1,16 @@
 package us.mudkip989.mods.mudkipsLib;
 
 import com.google.gson.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bukkit.*;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import us.mudkip989.mods.mudkipsLib.event.*;
 import us.mudkip989.mods.mudkipsLib.event.EventListener;
-import us.mudkip989.mods.mudkipsLib.extlibs.*;
 import us.mudkip989.mods.mudkipsLib.object.*;
 
 import java.util.*;
-import java.util.logging.*;
 
 public final class MudkipsLib extends JavaPlugin {
 
@@ -20,18 +20,14 @@ public final class MudkipsLib extends JavaPlugin {
 
     public static HashMap<UUID, Game> games;
 
-    public static Logger logger;
-
-
-
+    public final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("");
     @Override
     public void onEnable() {
         instance = this;
 
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new EventListener(), instance);
-        logger = Logger.getLogger("MudkipsLib");
-        this.getCommand("mlib").setExecutor(new Commands());
+        Objects.requireNonNull(this.getCommand("mlib")).setExecutor(new Commands());
         games = new HashMap<>();
 
         // Plugin startup logic
