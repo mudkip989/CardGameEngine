@@ -18,7 +18,7 @@ public final class MudkipsLib extends JavaPlugin {
 
     public static HashMap<UUID, Game> games;
 
-    public final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("MudkipsLibs");
+    public static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("MudkipsLibs");
     @Override
     public void onEnable() {
         instance = this;

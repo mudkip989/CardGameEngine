@@ -1,11 +1,15 @@
 package us.mudkip989.mods.mudkipsLib.event;
 
-import org.bukkit.command.*;
-import org.bukkit.entity.*;
-import org.jetbrains.annotations.*;
-import us.mudkip989.mods.mudkipsLib.object.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import us.mudkip989.mods.mudkipsLib.object.Game;
 
-import static us.mudkip989.mods.mudkipsLib.MudkipsLib.log;
+import java.util.logging.Level;
+
+import static us.mudkip989.mods.mudkipsLib.MudkipsLib.logger;
 
 public class Commands implements CommandExecutor {
 
@@ -19,7 +23,7 @@ public class Commands implements CommandExecutor {
             return true;
         }
         }catch (Exception e){
-            log.error("Error: ", e);
+            logger.log(Level.parse("error"), String.valueOf(e));
         }
 
         return false;
