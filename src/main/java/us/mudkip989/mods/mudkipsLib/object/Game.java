@@ -9,22 +9,31 @@ import us.mudkip989.mods.mudkipsLib.*;
 
 import java.util.*;
 
+import static org.joml.Math.*;
+
 public class Game {
     private final UUID gameID;
-    public List<Player> players;
+    public Player[] players;
     public ItemDisplay disp;
     public Interaction inter;
 
 
 
     public Game(Location location){
-
+        Location blockLocation = location.toCenterLocation();
+        blockLocation.setPitch(0);
+        blockLocation.setYaw((round(location.getYaw()/90)*90));
         gameID = UUID.randomUUID();
-        players = new ArrayList<>();
-        disp = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(location, ItemDisplay.class);
+        players = new Player[4];
+
+
+
+
+        disp = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(blockLocation, ItemDisplay.class);
         ItemMeta meta = new ItemStack(Material.BOOK).getItemMeta();
         meta.setCustomModelData(18);
         ItemStack stack = new ItemStack(Material.BOOK);
+
         stack.setItemMeta(meta);
         disp.setItemStack(stack);
         disp.setTransformationMatrix(new Matrix4f(
@@ -32,22 +41,23 @@ public class Game {
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 0, 0, 0, 1));
-        inter = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(location, Interaction.class);
+        inter = Objects.requireNonNull(MudkipsLib.instance.getServer().getWorld("world")).spawn(blockLocation, Interaction.class);
         inter.setInteractionHeight(1);
         inter.setInteractionWidth(1);
         inter.addScoreboardTag("interactable");
         inter.addScoreboardTag("game-"+gameID.toString());
-        inter.addScoreboardTag("event-toggle:<player>");
+        inter.addScoreboardTag("event-toggle");
         MudkipsLib.games.put(gameID, this);
     }
 
 //    Add Functions:
+//    -addPlayer
 //    -removePlayer
 //    -resetGame
 //    -startGame
 
 
-    public void runEvent(String event, String args){
+    public void runEvent(String event, String args, Player p){
 
         switch(event){
             case "delete":
@@ -63,7 +73,6 @@ public class Game {
 
                 break;
             case "toggle":
-                Player p = Bukkit.getPlayer(args);
                 if(p.canSee(disp)) {
                     p.hideEntity(MudkipsLib.instance, disp);
                 }else{
