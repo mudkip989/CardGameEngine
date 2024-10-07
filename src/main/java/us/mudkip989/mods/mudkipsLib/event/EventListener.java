@@ -28,7 +28,7 @@ public class EventListener implements Listener {
                 String event = action[0];
                 String rawargs = action[1];
                 String args = rawargs.replaceAll("<player>", player.getName());
-                game.runEvent(event, args);
+                game.runEvent(event, args, player);
 
             }
 
