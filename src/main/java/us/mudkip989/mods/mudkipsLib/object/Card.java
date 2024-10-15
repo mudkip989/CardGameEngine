@@ -4,6 +4,9 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.joml.*;
+import us.mudkip989.mods.mudkipsLib.utils.Meths;
+
+import static us.mudkip989.mods.mudkipsLib.utils.Meths.RotateVectors;
 
 public class Card {
 
@@ -28,8 +31,21 @@ public class Card {
         card.setItemStack(cardItem);
         blankCard.setItemStack(blankCardItem);
 
+
     }
 
+    public void flip(){
+
+        Quaterniond q = new Quaterniond(0.707106781, 0.707106781, 0, 0);
+
+
+    }
+
+    public void rotate(Quaterniond quad){
+
+
+
+    }
 
 
 
