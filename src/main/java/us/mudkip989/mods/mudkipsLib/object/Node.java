@@ -10,24 +10,15 @@ import java.util.logging.*;
 
 public class Node {
     public Location location;
-    public boolean faceUp, stackShowsHeight;
 
-
-    public static String parseValuefromEntity(Entity e, String key){
-        Set<String> tags = e.getScoreboardTags();
-
-        String val = null;
-
-        for(String tag: tags){
-
-            if(tag.startsWith(key + "-")){
-                val = tag.replaceFirst(key + "-", "");
-            }
-
-        }
-
-        return val;
+    public Node(Location loc){
+        location = loc;
     }
+
+    public void teleport(Location loc) {
+        location = loc;
+    }
+
 
 
 

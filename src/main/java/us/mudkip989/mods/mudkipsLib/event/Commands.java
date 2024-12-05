@@ -1,9 +1,11 @@
 package us.mudkip989.mods.mudkipsLib.event;
 
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.*;
 import org.jetbrains.annotations.NotNull;
 import us.mudkip989.mods.mudkipsLib.object.Game;
 
@@ -19,6 +21,7 @@ public class Commands implements CommandExecutor {
         if(commandSender instanceof Player) {
 
                 new Game(((Player) commandSender).getLocation());
+
 
             return true;
         }

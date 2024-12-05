@@ -8,19 +8,17 @@ import us.mudkip989.mods.mudkipsLib.utils.Meths;
 
 import static us.mudkip989.mods.mudkipsLib.utils.Meths.RotateVectors;
 
-public class Card {
+public class Card extends Node{
 
     public ItemDisplay card,blankCard;
-    public Vector3d[] transformVectors;
     public ItemStack cardItem, blankCardItem;
 
 
 
     public Card(ItemStack card_item, ItemStack blank_card_item, Location location){
-        transformVectors = new Vector3d[3];
-        transformVectors[0] = new Vector3d(1, 0, 0);
-        transformVectors[1] = new Vector3d(0, 1, 0);
-        transformVectors[2] = new Vector3d(0, 0, 1);
+        super(location);
+
+
         cardItem = card_item;
         blankCardItem = blank_card_item;
         location.setYaw(0);
@@ -34,19 +32,19 @@ public class Card {
 
     }
 
+
+    @Override
+    public void teleport(Location loc) {
+        super.teleport(loc);
+
+
+    }
+
     public void flip(){
 
-        Quaterniond q = new Quaterniond(0.707106781, 0.707106781, 0, 0);
+        Quaterniond q = new Quaterniond(0, 0, 0.707106781, 0.707106781);
 
 
     }
-
-    public void rotate(Quaterniond quad){
-
-
-
-    }
-
-
 
 }

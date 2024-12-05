@@ -17,6 +17,21 @@ public class Game {
     public ItemDisplay disp;
     public Interaction inter;
 
+    public static String parseValuefromEntity(Entity e, String key){
+        Set<String> tags = e.getScoreboardTags();
+
+        String val = null;
+
+        for(String tag: tags){
+
+            if(tag.startsWith(key + "-")){
+                val = tag.replaceFirst(key + "-", "");
+            }
+
+        }
+
+        return val;
+    }
 
 
     public Game(Location location){
