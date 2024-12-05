@@ -6,6 +6,7 @@ import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 import org.joml.*;
 import us.mudkip989.mods.mudkipsLib.*;
+import us.mudkip989.mods.mudkipsLib.event.*;
 
 import java.util.*;
 
@@ -72,25 +73,25 @@ public class Game {
 //    -startGame
 
 
-    public void runEvent(String event, String args, Player p){
+    public void runEvent(Event event, String args, Player p){
 
         switch(event){
-            case "delete":
+            case Event.DELETE:
                 disp.remove();
                 inter.remove();
                 break;
-            case "hide":
+            case Event.HIDE:
 
 
                 break;
-            case "show":
+            case Event.SHOW:
 
 
                 break;
-            case "toggle":
-                if(p.canSee(disp)) {
+            case Event.TOGGLE:
+                if (p.canSee(disp)) {
                     p.hideEntity(MudkipsLib.instance, disp);
-                }else{
+                } else{
                     p.showEntity(MudkipsLib.instance, disp);
                 }
 

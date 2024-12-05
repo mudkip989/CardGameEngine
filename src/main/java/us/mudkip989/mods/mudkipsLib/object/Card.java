@@ -4,11 +4,8 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.joml.*;
-import us.mudkip989.mods.mudkipsLib.utils.Meths;
 
-import static us.mudkip989.mods.mudkipsLib.utils.Meths.RotateVectors;
-
-public class Card extends Node{
+public class Card extends GameObject {
 
     public ItemDisplay card,blankCard;
     public ItemStack cardItem, blankCardItem;

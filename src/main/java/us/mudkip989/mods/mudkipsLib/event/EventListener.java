@@ -20,16 +20,15 @@ public class EventListener implements Listener {
     public void interact(PlayerInteractEntityEvent e){
         Entity victim = e.getRightClicked();
         Player player = e.getPlayer();
-        if(victim.getScoreboardTags().contains("interactable")){
+        if (victim.getScoreboardTags().contains("interactable")) {
             String id = Game.parseValuefromEntity(victim, "game");
-            if(MudkipsLib.games.keySet().contains(UUID.fromString(id))){
+            if (MudkipsLib.games.containsKey(UUID.fromString(id))) {
                 Game game = MudkipsLib.games.get(UUID.fromString(id));
                 String[] action = Game.parseValuefromEntity(victim, "event").split(":");
                 String event = action[0];
                 String rawargs = action[1];
                 String args = rawargs.replaceAll("<player>", player.getName());
-                game.runEvent(event, args, player);
-
+                game.runEvent(Event.valueOf(event.toUpperCase()), args, player);
             }
 
         }
