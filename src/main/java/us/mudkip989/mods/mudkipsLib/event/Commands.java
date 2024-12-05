@@ -18,14 +18,11 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         try {
-        if(commandSender instanceof Player) {
-
+            if(commandSender instanceof Player) {
                 new Game(((Player) commandSender).getLocation());
-
-
-            return true;
-        }
-        }catch (Exception e){
+                return true;
+            }
+        } catch (Exception e){
             logger.log(Level.parse("error"), String.valueOf(e));
         }
 

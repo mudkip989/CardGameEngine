@@ -1,17 +1,11 @@
 package us.mudkip989.mods.mudkipsLib.object;
 
 import org.bukkit.*;
-import org.bukkit.entity.*;
-import us.mudkip989.mods.mudkipsLib.*;
 
-import java.io.*;
-import java.util.*;
-import java.util.logging.*;
-
-public class Node {
+public class GameObject {
     public Location location;
 
-    public Node(Location loc){
+    public GameObject(Location loc){
         location = loc;
     }
 

@@ -10,7 +10,7 @@ public class Meths {
      * @param quad - Quaternion describing rotation.
      * @return new Array
      */
-    public static Vector3d[] RotateVectors(Vector3d[] vecs, Quaterniond quad){
+    public static Vector3d[] rotateVectors(Vector3d[] vecs, Quaterniond quad){
         Vector3d[] newarr = new Vector3d[3];
         int i = 0;
         for(Vector3d vec: vecs){
