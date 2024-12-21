@@ -1,4 +1,4 @@
-package us.mudkip989.mods.mudkipsLib.event;
+package us.mudkip989.mods.cge.event;
 
 import org.bukkit.command.*;
 import org.jetbrains.annotations.*;

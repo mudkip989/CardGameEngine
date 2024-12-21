@@ -1,30 +1,30 @@
-package us.mudkip989.mods.mudkipsLib.object;
+package us.mudkip989.mods.cge.object;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.joml.*;
+import us.mudkip989.mods.cge.*;
 
 public class Card extends GameObject {
 
-    public ItemDisplay card,blankCard;
-    public ItemStack cardItem, blankCardItem;
+    private ItemDisplay card;
+    private ItemStack cardItem;
 
 
 
-    public Card(ItemStack card_item, ItemStack blank_card_item, Location location){
+    public Card(ItemStack card_item, Location location){
         super(location);
 
 
         cardItem = card_item;
-        blankCardItem = blank_card_item;
         location.setYaw(0);
         location.setPitch(0);
         location.toCenterLocation();
         card = Bukkit.getServer().getWorld(location.getWorld().getName()).spawn(location, ItemDisplay.class);
-        blankCard = Bukkit.getServer().getWorld(location.getWorld().getName()).spawn(location, ItemDisplay.class);
         card.setItemStack(cardItem);
-        blankCard.setItemStack(blankCardItem);
+        card.addScoreboardTag("cge");
+        CGE.instance.RegisteredElements.add(card.getUniqueId().toString());
 
 
     }
@@ -33,8 +33,13 @@ public class Card extends GameObject {
     @Override
     public void teleport(Location loc) {
         super.teleport(loc);
+        card.teleport(loc);
+    }
 
-
+    @Override
+    public void teleport(GameObject ob) {
+        super.teleport(ob);
+        card.teleport(ob.getLocation());
     }
 
     public void flip(){
@@ -43,5 +48,7 @@ public class Card extends GameObject {
 
 
     }
+
+
 
 }

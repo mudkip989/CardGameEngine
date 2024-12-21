@@ -1,14 +1,14 @@
-name: MudkipsLib
+name: CardGameEngine
 version: '1.0-SNAPSHOT'
-main: us.mudkip989.mods.mudkipsLib.MudkipsLib
+main: us.mudkip989.mods.cge.CGE
 api-version: '1.21'
 depend: [ ProtocolLib ]
 commands:
-  mlib:
+  cge:
     usage: /<command>
     description: Empty Text.
-    aliases: [ml]
-  mgames:
+    aliases: []
+  games:
     usage: /<command> <game>
     description: Testing command.
-    aliases: [games]
+    aliases: []

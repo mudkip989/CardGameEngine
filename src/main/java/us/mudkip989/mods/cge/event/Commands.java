@@ -1,17 +1,16 @@
-package us.mudkip989.mods.mudkipsLib.event;
+package us.mudkip989.mods.cge.event;
 
-import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.*;
 import org.jetbrains.annotations.NotNull;
-import us.mudkip989.mods.mudkipsLib.object.Game;
+import us.mudkip989.mods.cge.*;
+import us.mudkip989.mods.cge.object.Game;
 
 import java.util.logging.Level;
 
-import static us.mudkip989.mods.mudkipsLib.MudkipsLib.logger;
+import static us.mudkip989.mods.cge.CGE.logger;
 
 public class Commands implements CommandExecutor {
 
@@ -19,6 +18,7 @@ public class Commands implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         try {
             if(commandSender instanceof Player) {
+                CGE.removeElements(true);
                 new Game(((Player) commandSender).getLocation());
                 return true;
             }

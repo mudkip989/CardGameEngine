@@ -1,4 +1,4 @@
-package us.mudkip989.mods.mudkipsLib.utils;
+package us.mudkip989.mods.cge.utils;
 
 import org.joml.*;
 
