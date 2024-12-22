@@ -4,6 +4,7 @@ import com.google.gson.*;
 import org.bukkit.*;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.event.EventListener;
 import us.mudkip989.mods.cge.object.*;
@@ -39,6 +40,19 @@ public final class CGE extends JavaPlugin {
         // Plugin shutdown logic
     }
 
+
+    @Override
+    public void onLoad() {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(Game game: games.values()){
+                    game.tickGame();
+                }
+            }
+        }.runTaskTimerAsynchronously(this, 100, 1);
+
+    }
 
     public static void removeElements(boolean removeInvalid){
 

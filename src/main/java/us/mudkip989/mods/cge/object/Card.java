@@ -6,6 +6,8 @@ import org.bukkit.inventory.*;
 import org.joml.*;
 import us.mudkip989.mods.cge.*;
 
+import java.util.*;
+
 public class Card extends GameObject {
 
     private ItemDisplay card;
@@ -21,7 +23,7 @@ public class Card extends GameObject {
         location.setYaw(0);
         location.setPitch(0);
         location.toCenterLocation();
-        card = Bukkit.getServer().getWorld(location.getWorld().getName()).spawn(location, ItemDisplay.class);
+        card = Objects.requireNonNull(location.getWorld()).spawn(location, ItemDisplay.class);
         card.setItemStack(cardItem);
         card.addScoreboardTag("cge");
         CGE.instance.RegisteredElements.add(card.getUniqueId().toString());

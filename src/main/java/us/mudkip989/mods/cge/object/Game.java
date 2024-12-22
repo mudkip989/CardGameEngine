@@ -12,10 +12,7 @@ import java.util.*;
 import static org.joml.Math.*;
 
 public class Game {
-    private final UUID gameID;
-    public Player[] players;
-    public Card[] cards;
-    public Interaction inter;
+    public final UUID gameID;
 
     public static String parseValuefromEntity(Entity e, String key){
         Set<String> tags = e.getScoreboardTags();
@@ -35,17 +32,15 @@ public class Game {
     }
 
 
+
     public Game(Location location){
 
         //Important Game Setup
-        Location blockLocation = location.toCenterLocation();
-        blockLocation.setPitch(0);
-        blockLocation.setYaw((round(location.getYaw()/90)*90));
         gameID = UUID.randomUUID();
 
 
         //Create Player List
-        players = new Player[4];
+
 
 
 
@@ -64,29 +59,7 @@ public class Game {
 //                0, 0, 0, 1));
 
         //Create Card Objects
-        cards = new Card[1];
-        for (int i = 0; i < cards.length; i++){
 
-            ItemMeta meta = new ItemStack(Material.BOOK).getItemMeta();
-            meta.setCustomModelData(18);
-            ItemStack stack = new ItemStack(Material.BOOK);
-            stack.setItemMeta(meta);
-
-            cards[i] = new Card(stack, location);
-
-        }
-
-
-
-        //Create Interaction
-        inter = Objects.requireNonNull(CGE.instance.getServer().getWorld("world")).spawn(blockLocation, Interaction.class);
-        inter.setInteractionHeight(1);
-        inter.setInteractionWidth(1);
-        inter.addScoreboardTag("interactable");
-        inter.addScoreboardTag("game-"+gameID.toString());
-        inter.addScoreboardTag("event-toggle");
-        inter.addScoreboardTag("cge");
-        CGE.instance.RegisteredElements.add(inter.getUniqueId().toString());
 
 
         //Add Game to Game List
@@ -99,16 +72,8 @@ public class Game {
 //    -resetGame
 //    -startGame
 
-    public boolean addPlayer(Player p){
+    public void tickGame(){
 
-
-        return false;
-    }
-
-    public boolean removePlayer(Player p){
-
-
-        return false;
     }
 
 
