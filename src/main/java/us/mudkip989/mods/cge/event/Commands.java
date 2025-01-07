@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import us.mudkip989.mods.cge.*;
-import us.mudkip989.mods.cge.object.Game;
+import us.mudkip989.mods.cge.example.*;
 
 import java.util.logging.Level;
 
@@ -19,7 +19,7 @@ public class Commands implements CommandExecutor {
         try {
             if(commandSender instanceof Player) {
                 CGE.removeElements(true);
-                new Game(((Player) commandSender).getLocation());
+                new Blackjack(((Player) commandSender).getLocation());
                 return true;
             }
         } catch (Exception e){

@@ -2,18 +2,16 @@ package us.mudkip989.mods.cge.object;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
-import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.*;
 import us.mudkip989.mods.cge.*;
 import us.mudkip989.mods.cge.event.*;
 
 import java.util.*;
 
-import static org.joml.Math.*;
-
-public class Game {
+public abstract class Game {
     public final UUID gameID;
 
+
+    //Parses a value from Entity Tags
     public static String parseValuefromEntity(Entity e, String key){
         Set<String> tags = e.getScoreboardTags();
 
@@ -32,33 +30,13 @@ public class Game {
     }
 
 
-
+    //Game Constructor method
     public Game(Location location){
 
         //Important Game Setup
         gameID = UUID.randomUUID();
 
 
-        //Create Player List
-
-
-
-
-        //Create Display
-//        disp = Objects.requireNonNull(CGE.instance.getServer().getWorld("world")).spawn(blockLocation, ItemDisplay.class);
-//        ItemMeta meta = new ItemStack(Material.BOOK).getItemMeta();
-//        meta.setCustomModelData(18);
-//        ItemStack stack = new ItemStack(Material.BOOK);
-//
-//        stack.setItemMeta(meta);
-//        disp.setItemStack(stack);
-//        disp.setTransformationMatrix(new Matrix4f(
-//                1, 0, 0, 0,
-//                0, 1, 0, 0,
-//                0, 0, 1, 0,
-//                0, 0, 0, 1));
-
-        //Create Card Objects
 
 
 
@@ -66,18 +44,14 @@ public class Game {
         CGE.games.put(gameID, this);
     }
 
-//    Add Functions:
-//    -addPlayer
-//    -removePlayer
-//    -resetGame
-//    -startGame
 
+    //Runs every 1/20th of a second. used for time specific things in the game.
     public void tickGame(){
 
     }
 
 
-
+    //Event listener for when a player clicks an Interactive.
     public void runEvent(Event event, String args, Player p){
 
         switch(event){

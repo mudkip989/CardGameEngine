@@ -12,6 +12,7 @@ public class Card extends GameObject {
 
     private ItemDisplay card;
     private ItemStack cardItem;
+    public String value;
 
 
 

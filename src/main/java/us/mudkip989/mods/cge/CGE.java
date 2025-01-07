@@ -31,6 +31,14 @@ public final class CGE extends JavaPlugin {
         pm.registerEvents(new EventListener(), instance);
         Objects.requireNonNull(this.getCommand("cge")).setExecutor(new Commands());
         games = new HashMap<>();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for(Game game: games.values()){
+                    game.tickGame();
+                }
+            }
+        }.runTaskTimerAsynchronously(this, 100, 1);
     }
 
 
@@ -43,14 +51,7 @@ public final class CGE extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for(Game game: games.values()){
-                    game.tickGame();
-                }
-            }
-        }.runTaskTimerAsynchronously(this, 100, 1);
+
 
     }
 
