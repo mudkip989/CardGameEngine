@@ -8,5 +8,8 @@ public enum Event {
     TOGGLE,
     JOIN,
     LEAVE,
-    FUNCTION
+    FUNCTION,
+    DRAW,
+    NEXT,
+    DISCARD
 }

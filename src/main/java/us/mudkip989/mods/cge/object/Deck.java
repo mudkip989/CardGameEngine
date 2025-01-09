@@ -6,11 +6,12 @@ import org.bukkit.inventory.meta.*;
 
 import java.util.*;
 
-public class Deck {
+public class Deck extends GameObject{
     private final List<Card> cards = new ArrayList<>();
     private final Location deckLocation;
 
     public Deck(Location location) {
+        super(location);
         this.deckLocation = location;
         initializeDeck();
         shuffle();
@@ -29,7 +30,7 @@ public class Deck {
         int dataIndex = 0;
         for (String suit : suits) {
             for (String value : values) {
-                ItemStack cardItem = new ItemStack(Material.PAPER);
+                ItemStack cardItem = new ItemStack(Material.BOOK);
                 ItemMeta meta = cardItem.getItemMeta();
                 if (meta != null) {
                     meta.setCustomModelData(customModelData[dataIndex]);

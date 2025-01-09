@@ -9,15 +9,16 @@ import java.util.*;
 
 public class Blackjack extends Game {
     private final List<Player> players = new ArrayList<>();
-    private final Map<Player, List<Card>> hands = new HashMap<>();
+    private final Map<Player, Hand> hands = new HashMap<>();
     private final Deck deck;
     private Interactive joinButton;
     private Interactive leaveButton;
+    public Location center;
 
 
     public Blackjack(Location location) {
         super(location);
-
+        center = location;
         location.setPitch(0);
         location.setYaw(0); //Temporary... Not Permanent.
 
@@ -32,9 +33,9 @@ public class Blackjack extends Game {
     private void dealCard(Player player) {
         Card card = deck.draw();
         if (card != null) {
-
+            hands.computeIfAbsent(player, k -> new Hand(center)).cards.add(card);
             card.teleport(player.getLocation().add(0, 2, 0)); // Place card above the player
-            hands.computeIfAbsent(player, k -> new ArrayList<>()).add(card);
+
         }
     }
 
@@ -51,7 +52,7 @@ public class Blackjack extends Game {
             score += numericValue;
             if (numericValue == 1) aces++;
         }
-        while (aces > 0 && score < 11) {
+        while (aces > 0 && score <= 11) {
             score += 10; // Count Ace as 11 if it doesn't bust the score
             aces--;
         }
@@ -69,7 +70,7 @@ public class Blackjack extends Game {
             case JOIN -> {
                 if (!players.contains(player)) {
                     players.add(player);
-                    hands.put(player, new ArrayList<>());
+                    hands.put(player, new Hand(center));
                     player.sendMessage("You have joined the Blackjack game!");
                 }
             }
