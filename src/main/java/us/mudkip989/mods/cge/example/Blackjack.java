@@ -6,6 +6,7 @@ import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.object.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static us.mudkip989.mods.cge.utils.Meths.shiftLocationForwards;
 
@@ -20,8 +21,9 @@ public class Blackjack extends Game {
     public Location center;
     private Integer maxPlayers = 5;
 
-
-
+    private Boolean active = false;
+    private Boolean started = false;
+    
     public Blackjack(Location location) {
         super(location);
 
@@ -87,14 +89,25 @@ public class Blackjack extends Game {
     @Override
     public void tickGame() {
         //Check player list
-            //if no players, reset game
+            //if no players & game started, reset game
             //if players, continue
 
+        if (this.players.stream().noneMatch(Objects::nonNull) && this.active) {
+            //Reset game
+
+            return;
+        }
+
         //if game is inactive and start pressed, reset all decks/hands, set timer
+        if (!this.active && this.started) {
+
+        }
+
         //if game is active, and players all stand, tick timer.
+        if (this.active) {
             //if dealer no stand, set timer, play dealer
             //if dealer stand, set timer, calc scores
-
+        }
 
         // Perform periodic updates if necessary
     }
