@@ -7,36 +7,61 @@ import us.mudkip989.mods.cge.object.*;
 
 import java.util.*;
 
+import static us.mudkip989.mods.cge.utils.Meths.shiftLocationForwards;
+
 public class Blackjack extends Game {
     private final List<Player> players = new ArrayList<>();
-    private final Map<Player, Hand> hands = new HashMap<>();
+    private final List<Hand> hands = new ArrayList<>();
+    private final List<Boolean> isPlaying = new ArrayList<>();
+
     private final Deck deck;
     private Interactive joinButton;
     private Interactive leaveButton;
     public Location center;
+    private Integer maxPlayers = 5;
+
 
 
     public Blackjack(Location location) {
         super(location);
-        center = location;
+
         location.setPitch(0);
-        location.setYaw(0); //Temporary... Not Permanent.
+        location.setYaw(15); //Temporary... Not Permanent.
+        location.add(0, 0.1, 0);
+        center = location.clone();
+        location.setYaw(location.getYaw()-90);
 
         // Initialize buttons
-        joinButton = new Interactive(location.clone().add(2, 0, 0), 1, 1, gameID, "JOIN");
-        leaveButton = new Interactive(location.clone().add(-2, 0, 0), 1, 1, gameID, "LEAVE");
+
+
+        joinButton = new Interactive(shiftLocationForwards(location.clone(), 1), 1, 1, gameID, "JOIN");
+        leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1), 1, 1, gameID, "LEAVE");
 
         // Initialize deck
-        deck = new Deck(location.clone().add(0, 1, 0));
+        deck = new Deck(shiftLocationForwards(center.clone(), -1));
+        float diff = 180f/(maxPlayers-1);
+        for(int i = 0; i < maxPlayers; i++){
+            players.add(null);
+            hands.add(new Hand(shiftLocationForwards(location.clone(), 2)));
+            isPlaying.add(false);
+            location.setYaw(location.getYaw()+diff);
+        }
+
+        testTable();
+
     }
 
     private void dealCard(Player player) {
-        Card card = deck.draw();
+        Card card = (Card) deck.draw();
         if (card != null) {
-            hands.computeIfAbsent(player, k -> new Hand(center)).cards.add(card);
-            card.teleport(player.getLocation().add(0, 2, 0)); // Place card above the player
+            hands.stream().filter(hand -> hand.owner.equals(player)).forEach(hand -> hand.add((Card) deck.draw()));
 
         }
+    }
+
+    private void testTable(){
+
+
     }
 
     private int calculateScore(List<Card> hand) {
@@ -61,6 +86,16 @@ public class Blackjack extends Game {
 
     @Override
     public void tickGame() {
+        //Check player list
+            //if no players, reset game
+            //if players, continue
+
+        //if game is inactive and start pressed, reset all decks/hands, set timer
+        //if game is active, and players all stand, tick timer.
+            //if dealer no stand, set timer, play dealer
+            //if dealer stand, set timer, calc scores
+
+
         // Perform periodic updates if necessary
     }
 
@@ -69,15 +104,18 @@ public class Blackjack extends Game {
         switch (event) {
             case JOIN -> {
                 if (!players.contains(player)) {
-                    players.add(player);
-                    hands.put(player, new Hand(center));
-                    player.sendMessage("You have joined the Blackjack game!");
+                    if(players.contains(null)){
+                        players.set(players.indexOf(null), player);
+                        player.sendMessage("You have joined the Blackjack game!");
+                    }else {
+                        player.sendMessage("Table is full.");
+                    }
+
                 }
             }
             case LEAVE -> {
                 if (players.contains(player)) {
-                    players.remove(player);
-                    hands.remove(player);
+                    players.set(players.indexOf(player), null);
                     player.sendMessage("You have left the Blackjack game!");
                 }
             }
@@ -93,6 +131,8 @@ public class Blackjack extends Game {
 
     // All of the card types (unused right now)
     public enum Cards {
+        BLANK           ("Blank",   "Blank",  1),
+
         TWO_OF_HEARTS   ("Hearts",  "2",      18),
         THREE_OF_HEARTS ("Hearts",  "3",      19),
         FOUR_OF_HEARTS  ("Hearts",  "4",      20),

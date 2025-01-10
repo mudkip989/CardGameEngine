@@ -1,5 +1,7 @@
 package us.mudkip989.mods.cge.utils;
 
+import org.bukkit.*;
+import org.bukkit.util.*;
 import org.joml.*;
 
 public class Meths {
@@ -42,5 +44,13 @@ public class Meths {
 
         return new Quaterniond(x, y, z, w);
 
+    }
+
+    public static Location shiftLocationForwards(Location loc, Integer amount){
+        Vector dir = loc.getDirection();
+        dir.multiply(amount);
+        loc.add(dir);
+
+        return loc;
     }
 }
