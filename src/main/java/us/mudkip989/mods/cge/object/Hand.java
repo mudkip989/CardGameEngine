@@ -6,9 +6,9 @@ import org.joml.*;
 
 import java.util.*;
 
-public class Hand extends GameObject {
+public class Hand<T extends GameObject> extends GameObject {
     public Vector3d stackVector;
-    public List<Card> cards = new ArrayList<>();
+    public List<T> cards = new ArrayList<>();
     public Player owner;
 
     public Hand(Location loc) {
@@ -17,7 +17,7 @@ public class Hand extends GameObject {
 
     }
 
-    public boolean add(Card card) {
+    public boolean add(T card) {
         cards.add(card);
         updateCardPostitions();
         return true;
@@ -49,5 +49,16 @@ public class Hand extends GameObject {
 
         return false;
     }
+
+    public boolean clear(){
+
+        for (T card: cards){
+            card.remove();
+        }
+
+        return true;
+    }
+
+
 
 }

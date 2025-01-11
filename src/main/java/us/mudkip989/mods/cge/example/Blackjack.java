@@ -14,6 +14,10 @@ public class Blackjack extends Game {
     private final List<Player> players = new ArrayList<>();
     private final List<Hand> hands = new ArrayList<>();
     private final List<Boolean> isPlaying = new ArrayList<>();
+    private final List<Boolean> isStand = new ArrayList<>();
+
+    private Hand dealerHand;
+    private boolean dealerStand = false;
 
     private final Deck deck;
     private Interactive joinButton;
@@ -41,6 +45,7 @@ public class Blackjack extends Game {
 
         // Initialize deck
         deck = new Deck(shiftLocationForwards(center.clone(), -1));
+        dealerHand = new Hand(center);
         float diff = 180f/(maxPlayers-1);
         for(int i = 0; i < maxPlayers; i++){
             players.add(null);

@@ -52,6 +52,9 @@ public class Card extends GameObject {
 
     }
 
-
-
+    @Override
+    public void remove() {
+        card.remove();
+        super.remove();
+    }
 }

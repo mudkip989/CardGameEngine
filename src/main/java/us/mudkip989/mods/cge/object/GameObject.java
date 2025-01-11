@@ -22,6 +22,12 @@ public class GameObject {
         return location;
     }
 
+    public void remove(){
+
+
+
+    }
+
 
 
 
