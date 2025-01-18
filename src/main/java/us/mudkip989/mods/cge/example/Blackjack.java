@@ -12,18 +12,18 @@ import static us.mudkip989.mods.cge.utils.Meths.shiftLocationForwards;
 
 public class Blackjack extends Game {
     private final List<Player> players = new ArrayList<>();
-    private final List<Hand> hands = new ArrayList<>();
+    private final List<Hand<Card>> hands = new ArrayList<>();
     private final List<Boolean> isPlaying = new ArrayList<>();
     private final List<Boolean> isStand = new ArrayList<>();
 
-    private Hand dealerHand;
+    private Hand<Card> dealerHand;
     private boolean dealerStand = false;
 
-    private final Deck deck;
+    private final Deck<Card> deck;
     private Interactive joinButton;
     private Interactive leaveButton;
     public Location center;
-    private Integer maxPlayers = 5;
+    private final Integer maxPlayers = 5;
 
     private Boolean active = false;
     private Boolean started = false;
@@ -44,17 +44,33 @@ public class Blackjack extends Game {
         leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1), 1, 1, gameID, "LEAVE");
 
         // Initialize deck
-        deck = new Deck(shiftLocationForwards(center.clone(), -1));
-        dealerHand = new Hand(center);
+        deck = new Deck<>(shiftLocationForwards(center.clone(), -1));
+        dealerHand = new Hand<>(center);
         float diff = 180f/(maxPlayers-1);
         for(int i = 0; i < maxPlayers; i++){
             players.add(null);
-            hands.add(new Hand(shiftLocationForwards(location.clone(), 2)));
+            hands.add(new Hand<>(shiftLocationForwards(location.clone(), 2)));
             isPlaying.add(false);
             location.setYaw(location.getYaw()+diff);
         }
 
         testTable();
+
+    }
+
+    private void resetGame(){
+
+        for(Hand<Card> hand: hands){
+            hand.cards.stream().forEach(card -> {
+                deck.discard(card);
+                hand.cards.remove(card);
+            });
+        }
+        dealerHand.cards.stream().forEach(card -> {
+            deck.discard(card);
+            dealerHand.cards.remove(card);
+        });
+
 
     }
 

@@ -17,6 +17,14 @@ public class Deck<T extends GameObject> extends GameObject{
         shuffle();
     }
 
+
+    public void updateCardPostitions() {
+
+        //teleport & transform cards to deck location.
+
+
+    }
+
     private void initializeDeck() {
 
 
@@ -58,6 +66,11 @@ public class Deck<T extends GameObject> extends GameObject{
             return cards.remove(0);
         }
         return null; // Deck is empty
+    }
+
+    public void discard(T card){
+        cards.add(card);
+
     }
 
     public int size() {
