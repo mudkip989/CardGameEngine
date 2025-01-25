@@ -11,22 +11,32 @@ import java.util.function.Predicate;
 import static us.mudkip989.mods.cge.utils.Meths.shiftLocationForwards;
 
 public class Blackjack extends Game {
+
+    //Players
     private final List<Player> players = new ArrayList<>();
     private final List<Hand<Card>> hands = new ArrayList<>();
     private final List<Boolean> isPlaying = new ArrayList<>();
     private final List<Boolean> isStand = new ArrayList<>();
 
+    //Dealer
     private Hand<Card> dealerHand;
     private boolean dealerStand = false;
 
+    //Table
     private final Deck<Card> deck;
     private Interactive joinButton;
     private Interactive leaveButton;
     public Location center;
     private final Integer maxPlayers = 5;
 
+    //Game
     private Boolean active = false;
     private Boolean started = false;
+    private Integer timer = 0;
+
+
+
+
     
     public Blackjack(Location location) {
         super(location);
@@ -88,6 +98,9 @@ public class Blackjack extends Game {
     }
 
     private int calculateScore(List<Card> hand) {
+        if(hand.isEmpty()){
+            return 0;
+        }
         int score = 0;
         int aces = 0;
         for (Card card : hand) {
@@ -113,7 +126,10 @@ public class Blackjack extends Game {
             //if no players & game started, reset game
             //if players, continue
 
+
         if (this.players.stream().noneMatch(Objects::nonNull) && this.active) {
+
+            resetGame();
             //Reset game
 
             return;
@@ -122,12 +138,22 @@ public class Blackjack extends Game {
         //if game is inactive and start pressed, reset all decks/hands, set timer
         if (!this.active && this.started) {
 
+
+
         }
 
         //if game is active, and players all stand, tick timer.
-        if (this.active) {
-            //if dealer no stand, set timer, play dealer
-            //if dealer stand, set timer, calc scores
+        if (this.active && isStand.stream().allMatch(state -> state)) {
+            timer--;
+            if(timer<1){
+                if(!dealerStand){
+                    timer = 40;
+                    //dealer logic
+                }else{
+                    timer = 100;
+                    //calculate score and show winners.
+                }
+            }
         }
 
         // Perform periodic updates if necessary
