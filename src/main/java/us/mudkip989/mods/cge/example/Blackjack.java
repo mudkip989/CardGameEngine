@@ -16,7 +16,8 @@ public class Blackjack extends Game {
     private final List<Player> players = new ArrayList<>();
     private final List<Hand<Card>> hands = new ArrayList<>();
     private final List<Boolean> isPlaying = new ArrayList<>();
-    private final List<Boolean> isStand = new ArrayList<>();
+    private final HashMap<Player, Boolean> isStand = new HashMap<>();
+    private final HashMap<Integer, Player> seating = new HashMap<>();
 
     //Dealer
     private Hand<Card> dealerHand;
@@ -79,7 +80,10 @@ public class Blackjack extends Game {
         dealerHand.cards.stream().forEach(card -> {
             deck.discard(card);
             dealerHand.cards.remove(card);
+            dealerStand = false;
         });
+
+
 
 
     }
@@ -137,7 +141,7 @@ public class Blackjack extends Game {
 
         //if game is inactive and start pressed, reset all decks/hands, set timer
         if (!this.active && this.started) {
-
+            resetGame();
 
 
         }
