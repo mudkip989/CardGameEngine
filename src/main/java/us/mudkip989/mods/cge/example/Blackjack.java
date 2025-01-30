@@ -101,13 +101,14 @@ public class Blackjack extends Game {
 
     }
 
-    private int calculateScore(List<Card> hand) {
-        if(hand.isEmpty()){
+    private int calculateScore(Hand<Card> hand) {
+        List<Card> cards = hand.cards;
+        if(cards.isEmpty()){
             return 0;
         }
         int score = 0;
         int aces = 0;
-        for (Card card : hand) {
+        for (Card card : cards) {
             String value = card.value;
             int numericValue = switch (value) {
                 case "Jack", "Queen", "King" -> 10;
@@ -135,6 +136,7 @@ public class Blackjack extends Game {
 
             resetGame();
             //Reset game
+            this.active = false;
 
             return;
         }
@@ -142,16 +144,29 @@ public class Blackjack extends Game {
         //if game is inactive and start pressed, reset all decks/hands, set timer
         if (!this.active && this.started) {
             resetGame();
-
+            timer = 60;
+            this.active = true;
 
         }
 
         //if game is active, and players all stand, tick timer.
-        if (this.active && isStand.stream().allMatch(state -> state)) {
+        if (this.active && isStand.values().stream().allMatch(state -> state)) {
             timer--;
             if(timer<1){
                 if(!dealerStand){
                     timer = 40;
+
+                    int seenScore = calculateScore(dealerHand);
+                    if(seenScore >16){
+                        //stand
+                        dealerStand = true;
+                    }else{
+                        //draw
+                        dealerHand.add(deck.draw());
+                        dealerHand.updateCardPostitions();
+                        deck.updateCardPostitions();
+                    }
+
                     //dealer logic
                 }else{
                     timer = 100;
