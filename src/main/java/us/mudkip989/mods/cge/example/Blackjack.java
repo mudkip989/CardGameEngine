@@ -6,7 +6,6 @@ import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.object.*;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 import static us.mudkip989.mods.cge.utils.Meths.shiftLocationForwards;
 
@@ -34,14 +33,22 @@ public class Blackjack extends Game {
     private Boolean active = false;
     private Boolean started = false;
     private Integer timer = 0;
-
-
-
+    private List<GameObject> randoObjects;
+    private Interactive hitButton;
+    private TextObject hitText;
+    private Interactive standButton;
+    private TextObject standText;
+    /*
+    --------------------------------------------------------
+    HELLO!
+    Please Put References to ALL Entities somewhere proper so we do not lose contact to them!
+    --------------------------------------------------------
+    */
 
     
     public Blackjack(Location location) {
         super(location);
-
+        randoObjects = new ArrayList<>();
         location.setPitch(0);
         location.setYaw(15); //Temporary... Not Permanent.
         location.add(0, 0.1, 0);
@@ -51,18 +58,31 @@ public class Blackjack extends Game {
         // Initialize buttons
 
 
-        joinButton = new Interactive(shiftLocationForwards(location.clone(), 1), 1, 1, gameID, "JOIN");
-        leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1), 1, 1, gameID, "LEAVE");
+        joinButton = new Interactive(shiftLocationForwards(location.clone(), 1f), 1, 1, gameID, "JOIN");
+        leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1f), 1, 1, gameID, "LEAVE");
 
         // Initialize deck
-        deck = new Deck<>(shiftLocationForwards(center.clone(), -1));
+        deck = new Deck<>(shiftLocationForwards(center.clone(), -1f));
         dealerHand = new Hand<>(center);
         float diff = 180f/(maxPlayers-1);
+        Location rotorloc = location.clone();
+        rotorloc.setYaw(rotorloc.getYaw()+90);
+        hitButton = new Interactive(shiftLocationForwards(rotorloc.clone(), 0.5f), 0.25f, 0.25f, this.gameID, "hit");
+
+        standButton = new Interactive(location.clone(), 0.25f, 0.25f, this.gameID, "stand");
+
         for(int i = 0; i < maxPlayers; i++){
+            //create player slot
             players.add(null);
-            hands.add(new Hand<>(shiftLocationForwards(location.clone(), 2)));
+            //create player hand at rotated location
+            hands.add(new Hand<>(shiftLocationForwards(rotorloc.clone(), 2f)));
+            Location temploc = rotorloc.clone();
+            temploc.setYaw(temploc.getYaw() + 90);
+
+            //create player bool
             isPlaying.add(false);
-            location.setYaw(location.getYaw()+diff);
+            //rotate for next iteration
+            rotorloc.setYaw(rotorloc.getYaw()+diff);
         }
 
         testTable();

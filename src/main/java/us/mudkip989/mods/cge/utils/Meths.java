@@ -46,7 +46,7 @@ public class Meths {
 
     }
 
-    public static Location shiftLocationForwards(Location loc, Integer amount){
+    public static Location shiftLocationForwards(Location loc, Float amount){
         Vector dir = loc.getDirection();
         dir.multiply(amount);
         loc.add(dir);
