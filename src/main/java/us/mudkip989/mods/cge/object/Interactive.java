@@ -23,6 +23,8 @@ public class Interactive extends GameObject{
         interaction.addScoreboardTag("game-"+gameID.toString());
         interaction.addScoreboardTag("event-"+event);
         interaction.addScoreboardTag("cge");
+        CGE.instance.RegisteredElements.add(interaction.getUniqueId().toString());
+
 
     }
 }

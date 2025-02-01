@@ -18,10 +18,12 @@ public class Deck<T extends GameObject> extends GameObject{
     }
 
 
+
+
     public void updateCardPostitions() {
 
         //teleport & transform cards to deck location.
-
+        cards.forEach(card -> card.teleport(this.getLocation()));
 
     }
 

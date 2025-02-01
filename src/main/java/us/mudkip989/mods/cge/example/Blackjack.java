@@ -2,6 +2,8 @@ package us.mudkip989.mods.cge.example;
 
 import org.bukkit.*;
 import org.bukkit.entity.*;
+import org.bukkit.inventory.*;
+import org.bukkit.inventory.meta.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.object.*;
 
@@ -16,7 +18,7 @@ public class Blackjack extends Game {
     private final List<Hand<Card>> hands = new ArrayList<>();
     private final List<Boolean> isPlaying = new ArrayList<>();
     private final HashMap<Player, Boolean> isStand = new HashMap<>();
-    private final HashMap<Integer, Player> seating = new HashMap<>();
+    private final HashMap<Player, Integer> seating = new HashMap<>();
 
     //Dealer
     private Hand<Card> dealerHand;
@@ -45,7 +47,7 @@ public class Blackjack extends Game {
     --------------------------------------------------------
     */
 
-    
+
     public Blackjack(Location location) {
         super(location);
         randoObjects = new ArrayList<>();
@@ -57,30 +59,49 @@ public class Blackjack extends Game {
 
         // Initialize buttons
 
-
         joinButton = new Interactive(shiftLocationForwards(location.clone(), 1f), 1, 1, gameID, "JOIN");
         leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1f), 1, 1, gameID, "LEAVE");
 
+
         // Initialize deck
         deck = new Deck<>(shiftLocationForwards(center.clone(), -1f));
+        List<Cards> inDeck = new ArrayList<>(List.of(Cards.values()));
+        inDeck.removeFirst();
+        for(Cards thing: inDeck){
+
+            ItemStack stacked = new ItemStack(Material.BOOK);
+            ItemMeta meta = stacked.getItemMeta();
+            meta.setCustomModelData(thing.modelData);
+            stacked.setItemMeta(meta);
+            deck.discard(new Card(stacked, this.center));
+
+        }
+        deck.updateCardPostitions();
         dealerHand = new Hand<>(center);
         float diff = 180f/(maxPlayers-1);
         Location rotorloc = location.clone();
         rotorloc.setYaw(rotorloc.getYaw()+90);
-        hitButton = new Interactive(shiftLocationForwards(rotorloc.clone(), 0.5f), 0.25f, 0.25f, this.gameID, "hit");
 
-        standButton = new Interactive(location.clone(), 0.25f, 0.25f, this.gameID, "stand");
+        //hit and stand buttons
+        hitButton = new Interactive(shiftLocationForwards(rotorloc.clone(), 0.5f), 0.25f, 0.25f, this.gameID, "DRAW");
+        hitText = new TextObject(shiftLocationForwards(rotorloc.clone(), 0.5f),"Hit");
+        standButton = new Interactive(shiftLocationForwards(rotorloc.clone(), -0.5f), 0.25f, 0.25f, this.gameID, "NEXT");
+        standText = new TextObject(shiftLocationForwards(rotorloc.clone(), -0.5f),"Stand");
+        rotorloc.setYaw(rotorloc.getYaw()-90);
 
         for(int i = 0; i < maxPlayers; i++){
             //create player slot
             players.add(null);
-            //create player hand at rotated location
-            hands.add(new Hand<>(shiftLocationForwards(rotorloc.clone(), 2f)));
-            Location temploc = rotorloc.clone();
-            temploc.setYaw(temploc.getYaw() + 90);
-
             //create player bool
             isPlaying.add(false);
+            //create player hand at rotated location
+            hands.add(new Hand<>(shiftLocationForwards(rotorloc.clone(), 2f)));
+
+//            //templocation
+//            Location temploc = rotorloc.clone();
+//            temploc.setYaw(temploc.getYaw() + 90);
+
+
             //rotate for next iteration
             rotorloc.setYaw(rotorloc.getYaw()+diff);
         }
@@ -96,24 +117,34 @@ public class Blackjack extends Game {
                 deck.discard(card);
                 hand.cards.remove(card);
             });
+            hand.updateCardPostitions();
         }
         dealerHand.cards.stream().forEach(card -> {
             deck.discard(card);
             dealerHand.cards.remove(card);
             dealerStand = false;
         });
-
+        deck.updateCardPostitions();
+        dealerHand.updateCardPostitions();
 
 
 
     }
 
     private void dealCard(Player player) {
-        Card card = (Card) deck.draw();
-        if (card != null) {
-            hands.stream().filter(hand -> hand.owner.equals(player)).forEach(hand -> hand.add((Card) deck.draw()));
 
+        int seat = seating.get(player);
+        Hand<Card> hand = hands.get(seat);
+        Card card = deck.draw();
+        if(card != null){
+            hand.add(card);
         }
+        hand.updateCardPostitions();
+//        Card card = (Card) deck.draw();
+//        if (card != null) {
+//            hands.stream().filter(hand -> hand.owner.equals(player)).forEach(hand -> hand.add((Card) deck.draw()));
+//
+//        }
     }
 
     private void testTable(){
@@ -202,19 +233,27 @@ public class Blackjack extends Game {
     public void runEvent(Event event, String args, Player player) {
         switch (event) {
             case JOIN -> {
-                if (!players.contains(player)) {
+                if (!players.contains(player) && seating.size() < maxPlayers) {
                     if(players.contains(null)){
-                        players.set(players.indexOf(null), player);
+                        int index = players.indexOf(null);
+                        players.set(index, player);
+                        isStand.put(player, false);
+                        //find available numbers here
+                        seating.put(player, index);
                         player.sendMessage("You have joined the Blackjack game!");
                     }else {
-                        player.sendMessage("Table is full.");
+                        player.sendMessage("You are already part of the table.");
                     }
 
+                }else{
+                    player.sendMessage("Table is full.");
                 }
             }
             case LEAVE -> {
                 if (players.contains(player)) {
-                    players.set(players.indexOf(player), null);
+                    players.set(seating.get(player), null);
+                    isStand.remove(player);
+                    seating.remove(player);
                     player.sendMessage("You have left the Blackjack game!");
                 }
             }
@@ -222,6 +261,17 @@ public class Blackjack extends Game {
                 if ("deal".equals(args) && players.contains(player)) {
                     dealCard(player);
                     player.sendMessage("You were dealt a card.");
+                }
+            }
+            case DRAW -> {
+                if(players.contains(player)) {
+                    dealCard(player);
+                    player.sendMessage("You were dealt a card.");
+                }
+            }
+            case NEXT -> {
+                if(players.contains(player) && !isStand.get(player)) {
+                    isStand.put(player, true);
                 }
             }
             default -> super.runEvent(event, args, player);

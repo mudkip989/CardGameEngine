@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.util.*;
 import org.joml.*;
+import us.mudkip989.mods.cge.*;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ public class TextObject extends GameObject{
         display.addScoreboardTag("cge");
         display.setTransformationMatrix(new Matrix4f(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1));
         transformation = display.getTransformation();
+        CGE.instance.RegisteredElements.add(display.getUniqueId().toString());
 
     }
 

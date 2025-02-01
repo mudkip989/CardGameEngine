@@ -26,7 +26,7 @@ public class Hand<T extends GameObject> extends GameObject {
     public void updateCardPostitions() {
 
         //teleport & transform cards to hand location.
-
+        cards.forEach(card -> card.teleport(this.getLocation()));
 
     }
 
