@@ -12,7 +12,10 @@ public class Card extends GameObject {
 
     private ItemDisplay card;
     private ItemStack cardItem;
-    public String value;
+    public String value = "";
+    public String suit = "";
+    public int modelData = 0;
+
 
 
 
@@ -32,17 +35,28 @@ public class Card extends GameObject {
 
     }
 
+    public void setValue(String val){
+        value = val;
+    }
+
+    public void setSuit(String val){
+        suit = val;
+    }
+
+    public void setModelData(int val){
+        modelData = val;
+    }
 
     @Override
     public void teleport(Location loc) {
         super.teleport(loc);
-        card.teleport(loc);
+        CGE.queueEntityTeleport(card, loc);
     }
 
     @Override
     public void teleport(GameObject ob) {
         super.teleport(ob);
-        card.teleport(ob.getLocation());
+        CGE.queueEntityTeleport(card, ob.getLocation());
     }
 
     public void flip(){

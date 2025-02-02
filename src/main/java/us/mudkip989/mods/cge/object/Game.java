@@ -45,6 +45,8 @@ public abstract class Game {
     }
 
 
+
+
     //Runs every 1/20th of a second. used for time specific things in the game.
     public void tickGame(){
 

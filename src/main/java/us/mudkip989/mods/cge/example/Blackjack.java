@@ -1,9 +1,11 @@
 package us.mudkip989.mods.cge.example;
 
+import net.kyori.adventure.text.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+import us.mudkip989.mods.cge.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.object.*;
 
@@ -40,6 +42,13 @@ public class Blackjack extends Game {
     private TextObject hitText;
     private Interactive standButton;
     private TextObject standText;
+    private Interactive startButton;
+
+
+    //debug things
+    private TextObject tickCounter;
+    private int counter;
+
     /*
     --------------------------------------------------------
     HELLO!
@@ -62,6 +71,10 @@ public class Blackjack extends Game {
         joinButton = new Interactive(shiftLocationForwards(location.clone(), 1f), 1, 1, gameID, "JOIN");
         leaveButton = new Interactive(shiftLocationForwards(location.clone(), -1f), 1, 1, gameID, "LEAVE");
 
+        Location centerClone = center.clone();
+//        tickCounter = new TextObject(centerClone, "tick");
+        centerClone.add(new Location(centerClone.getWorld(), 0, 1, 0));
+        startButton = new Interactive(centerClone, 0.5f, 0.5f, gameID, "START");
 
         // Initialize deck
         deck = new Deck<>(shiftLocationForwards(center.clone(), -1f));
@@ -73,7 +86,11 @@ public class Blackjack extends Game {
             ItemMeta meta = stacked.getItemMeta();
             meta.setCustomModelData(thing.modelData);
             stacked.setItemMeta(meta);
-            deck.discard(new Card(stacked, this.center));
+            Card thingy = new Card(stacked, this.center);
+            thingy.value = thing.rank;
+            thingy.suit = thing.suit;
+            thingy.modelData = thing.modelData;
+            deck.discard(thingy);
 
         }
         deck.updateCardPostitions();
@@ -106,6 +123,10 @@ public class Blackjack extends Game {
             rotorloc.setYaw(rotorloc.getYaw()+diff);
         }
 
+
+
+
+
         testTable();
 
     }
@@ -113,20 +134,28 @@ public class Blackjack extends Game {
     private void resetGame(){
 
         for(Hand<Card> hand: hands){
-            hand.cards.stream().forEach(card -> {
+            List<Card> tempList = new ArrayList<>(hand.cards);
+            tempList.forEach(card -> {
                 deck.discard(card);
                 hand.cards.remove(card);
             });
             hand.updateCardPostitions();
         }
-        dealerHand.cards.stream().forEach(card -> {
+        List<Card> tempList = new ArrayList<>(dealerHand.cards);
+        tempList.forEach(card -> {
             deck.discard(card);
             dealerHand.cards.remove(card);
-            dealerStand = false;
+
         });
+        dealerStand = false;
         deck.updateCardPostitions();
         dealerHand.updateCardPostitions();
 
+        isStand.forEach((player, val) -> isStand.put(player, false));
+        for(int i = 0; i < maxPlayers; i++){
+            isPlaying.set(i, false);
+        }
+        seating.forEach((player, seat) -> isPlaying.set(seat, true));
 
 
     }
@@ -181,10 +210,12 @@ public class Blackjack extends Game {
         //Check player list
             //if no players & game started, reset game
             //if players, continue
+//        counter++;
+//        tickCounter.setText(String.valueOf(counter));
 
 
         if (this.players.stream().noneMatch(Objects::nonNull) && this.active) {
-
+            CGE.instance.getServer().sendMessage(Component.text("hit?"));
             resetGame();
             //Reset game
             this.active = false;
@@ -197,6 +228,7 @@ public class Blackjack extends Game {
             resetGame();
             timer = 60;
             this.active = true;
+            this.started = false;
 
         }
 
@@ -221,6 +253,7 @@ public class Blackjack extends Game {
                     //dealer logic
                 }else{
                     timer = 100;
+                    this.active = false;
                     //calculate score and show winners.
                 }
             }
@@ -237,9 +270,14 @@ public class Blackjack extends Game {
                     if(players.contains(null)){
                         int index = players.indexOf(null);
                         players.set(index, player);
+
                         isStand.put(player, false);
                         //find available numbers here
                         seating.put(player, index);
+                        if(!this.active){
+                            isPlaying.set(seating.get(player), true);
+                        }
+
                         player.sendMessage("You have joined the Blackjack game!");
                     }else {
                         player.sendMessage("You are already part of the table.");
@@ -252,8 +290,10 @@ public class Blackjack extends Game {
             case LEAVE -> {
                 if (players.contains(player)) {
                     players.set(seating.get(player), null);
+                    isPlaying.set(seating.get(player), false);
                     isStand.remove(player);
                     seating.remove(player);
+
                     player.sendMessage("You have left the Blackjack game!");
                 }
             }
@@ -265,13 +305,25 @@ public class Blackjack extends Game {
             }
             case DRAW -> {
                 if(players.contains(player)) {
-                    dealCard(player);
-                    player.sendMessage("You were dealt a card.");
+                    player.sendMessage(Component.text(isPlaying.get(seating.get(player)) + " : " + seating.get(player)));
+                    if(isPlaying.get(seating.get(player))) {
+                        dealCard(player);
+                        player.sendMessage("You were dealt a card.");
+                    }
                 }
             }
             case NEXT -> {
-                if(players.contains(player) && !isStand.get(player)) {
-                    isStand.put(player, true);
+                if(players.contains(player)) {
+                    if(!isStand.get(player) && isPlaying.get(seating.get(player))) {
+                        isStand.put(player, true);
+                    }
+                }
+            }
+            case START -> {
+                player.sendMessage(Component.text(players.contains(player) + " : " + this.active));
+                if(players.contains(player) && !this.active){
+                    player.sendMessage(Component.text("Hit debug message"));
+                    this.started = true;
                 }
             }
             default -> super.runEvent(event, args, player);

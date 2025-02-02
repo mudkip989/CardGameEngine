@@ -2,6 +2,7 @@ package us.mudkip989.mods.cge;
 
 import com.google.gson.*;
 import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.*;
@@ -20,6 +21,7 @@ public final class CGE extends JavaPlugin {
     public static HashMap<UUID, Game> games;
     public static Logger logger;
     public List<String> RegisteredElements;
+    public static HashMap<Entity, Location> teleportQueue = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -39,6 +41,18 @@ public final class CGE extends JavaPlugin {
                 }
             }
         }.runTaskTimerAsynchronously(this, 100, 1);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                HashMap<Entity, Location> tempMap = new HashMap<>(teleportQueue);
+
+                tempMap.forEach((e, l) -> {
+                    e.teleport(l);
+                    teleportQueue.remove(e);
+                });
+            }
+        }.runTaskTimer(this, 20, 1);
     }
 
 
@@ -67,6 +81,11 @@ public final class CGE extends JavaPlugin {
 
 
         }
+    }
+
+    public static void queueEntityTeleport(Entity e, Location l){
+        teleportQueue.put(e, l);
+
     }
 }
 //

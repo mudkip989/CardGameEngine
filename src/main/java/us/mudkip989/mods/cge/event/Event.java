@@ -11,5 +11,6 @@ public enum Event {
     FUNCTION,
     DRAW,
     NEXT,
-    DISCARD
+    DISCARD,
+    START
 }

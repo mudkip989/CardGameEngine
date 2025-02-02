@@ -29,6 +29,7 @@ public class TextObject extends GameObject{
 
     public void setText(String text){
         this.text = text;
+        display.text(Component.text(text));
     }
 
     public String getText(){
