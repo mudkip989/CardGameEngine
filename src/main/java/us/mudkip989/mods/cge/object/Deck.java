@@ -3,18 +3,38 @@ package us.mudkip989.mods.cge.object;
 import org.bukkit.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.util.*;
+import org.bukkit.util.Vector;
+import org.joml.*;
 
+import java.lang.*;
+import java.lang.Math;
 import java.util.*;
 
 public class Deck<T extends GameObject> extends GameObject{
+    public Vector stackVector;
     private final List<T> cards = new ArrayList<>();
-    private final Location deckLocation;
+    private Transformation totalTransformation;
 
-    public Deck(Location location) {
-        super(location);
-        this.deckLocation = location;
+    public Deck(Location loc, Vector vec) {
+        super(loc);
+        stackVector = vec;
+        totalTransformation = new Transformation(
+                new Vector3f(0, 0, 0),              //Translation
+                new AxisAngle4f((float) Math.PI, 0, 0, 1),  //Left Rotation
+                new Vector3f(1, 1, 1),              //Scale
+                new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
+    }
 
-        shuffle();
+    public Deck(Location loc) {
+        super(loc);
+        stackVector = new Vector(0, 0.001, 0);
+        totalTransformation = new Transformation(
+                new Vector3f(0, 0, 0),              //Translation
+                new AxisAngle4f((float) Math.PI, 0, 0, 1),  //Left Rotation
+                new Vector3f(1, 1, 1),              //Scale
+                new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
+
     }
 
 
@@ -22,10 +42,27 @@ public class Deck<T extends GameObject> extends GameObject{
 
     public void updateCardPostitions() {
 
-        //teleport & transform cards to deck location.
-        cards.forEach(card -> card.teleport(this.getLocation()));
+        //teleport & transform cards to hand location.
+        Vector vec = stackVector.clone().rotateAroundY((-this.getLocation().getYaw()* Math.PI)/180);
+        int num = cards.size();
+        Location tempLoc = this.getLocation().clone();
+        tempLoc.add(vec.clone().multiply(num));
+        for(T card: cards) {
+
+            card.teleport(tempLoc.clone().add(vec.clone().multiply(-cards.indexOf(card))));
+            card.setTransform(totalTransformation);
+
+        }
 
     }
+
+    @Override
+    public void setTransform(Transformation trans) {
+        totalTransformation = trans;
+        updateCardPostitions();
+    }
+
+
 
     private void initializeDeck() {
 

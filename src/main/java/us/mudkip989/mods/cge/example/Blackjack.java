@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.util.Vector;
 import us.mudkip989.mods.cge.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.object.*;
@@ -61,8 +62,7 @@ public class Blackjack extends Game {
         super(location);
         randoObjects = new ArrayList<>();
         location.setPitch(0);
-        location.setYaw(15); //Temporary... Not Permanent.
-        location.add(0, 0.1, 0);
+        location.add(0, 0.01, 0);
         center = location.clone();
         location.setYaw(location.getYaw()-90);
 
@@ -93,11 +93,13 @@ public class Blackjack extends Game {
             deck.discard(thingy);
 
         }
-        deck.updateCardPostitions();
-        dealerHand = new Hand<>(center);
-        float diff = 180f/(maxPlayers-1);
         Location rotorloc = location.clone();
         rotorloc.setYaw(rotorloc.getYaw()+90);
+        deck.shuffle();
+        deck.updateCardPostitions();
+        dealerHand = new Hand<>(rotorloc.clone());
+        float diff = 180f/(maxPlayers-1);
+
 
         //hit and stand buttons
         hitButton = new Interactive(shiftLocationForwards(rotorloc.clone(), 0.5f), 0.25f, 0.25f, this.gameID, "DRAW");
@@ -112,7 +114,10 @@ public class Blackjack extends Game {
             //create player bool
             isPlaying.add(false);
             //create player hand at rotated location
-            hands.add(new Hand<>(shiftLocationForwards(rotorloc.clone(), 2f)));
+            Location temploc = shiftLocationForwards(rotorloc.clone(), 2f);
+            temploc.setYaw(temploc.getYaw()+180);
+            hands.add(new Hand<>(temploc));
+            new Node(temploc);
 
 //            //templocation
 //            Location temploc = rotorloc.clone();

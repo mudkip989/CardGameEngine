@@ -1,6 +1,7 @@
 package us.mudkip989.mods.cge.object;
 
 import org.bukkit.*;
+import org.bukkit.util.*;
 
 public class GameObject {
     private Location location;
@@ -28,7 +29,10 @@ public class GameObject {
 
     }
 
+    public void setTransform(Transformation trans){
 
+
+    }
 
 
 }
