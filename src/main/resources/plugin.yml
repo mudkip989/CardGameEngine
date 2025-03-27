@@ -1,0 +1,9 @@
+name: BlackJackAddon
+version: '1.0-SNAPSHOT'
+main: us.mudkip989.plugins.blackJackAddon.BlackJackAddon
+api-version: '1.21'
+prefix: BJA
+authors: [ mudkip989 ]
+description: First addon for CardGameEngine
+depend:
+  - CardGameEngine
