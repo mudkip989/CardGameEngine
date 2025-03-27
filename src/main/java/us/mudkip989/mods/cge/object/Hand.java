@@ -22,17 +22,17 @@ public class Hand<T extends GameObject> extends GameObject {
         totalTransformation = new Transformation(
                 new Vector3f(0, 0, 0),              //Translation
                 new AxisAngle4f(0, 0, 0, 1),  //Left Rotation
-                new Vector3f(1, 1, 1),              //Scale
+                new Vector3f(0.75f, 0.75f, 0.75f),              //Scale
                 new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
 
     }
     public Hand(Location loc){
         super(loc);
-        stackVector = new Vector(0.48, 0, 0);
+        stackVector = new Vector(0.4, 0, 0);
         totalTransformation = new Transformation(
                 new Vector3f(0, 0, 0),              //Translation
                 new AxisAngle4f(0, 0, 0, 1),  //Left Rotation
-                new Vector3f(1, 1, 1),              //Scale
+                new Vector3f(0.75f, 0.75f, 0.75f),              //Scale
                 new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
     }
 

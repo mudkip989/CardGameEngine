@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.event.EventListener;
+import us.mudkip989.mods.cge.example.*;
 import us.mudkip989.mods.cge.object.*;
 
 import java.util.*;
@@ -22,6 +23,7 @@ public final class CGE extends JavaPlugin {
     public static Logger logger;
     public List<String> RegisteredElements;
     public static HashMap<Entity, Location> teleportQueue = new HashMap<>();
+    public static HashMap<String, Class<?>> gameLibrary;
 
     @Override
     public void onEnable() {
@@ -33,6 +35,11 @@ public final class CGE extends JavaPlugin {
         pm.registerEvents(new EventListener(), instance);
         Objects.requireNonNull(this.getCommand("cge")).setExecutor(new Commands());
         games = new HashMap<>();
+        gameLibrary = new HashMap<>();
+        //---------------------------
+        //Remove When Separating
+//        gameLibrary.put("cge:black_jack", Blackjack.class);
+        //---------------------------
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -52,7 +59,7 @@ public final class CGE extends JavaPlugin {
                     teleportQueue.remove(e);
                 });
             }
-        }.runTaskTimer(this, 20, 1);
+        }.runTaskTimer(this, 0, 1);
     }
 
 
@@ -87,5 +94,12 @@ public final class CGE extends JavaPlugin {
         teleportQueue.put(e, l);
 
     }
+
+    public void registerGame(String key, Class<?> game){
+
+        gameLibrary.put(key, game);
+
+    }
+
 }
 //

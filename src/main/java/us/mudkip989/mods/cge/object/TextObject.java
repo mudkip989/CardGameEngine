@@ -24,6 +24,7 @@ public class TextObject extends GameObject{
         display.setTransformationMatrix(new Matrix4f(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1));
         transformation = display.getTransformation();
         CGE.instance.RegisteredElements.add(display.getUniqueId().toString());
+        display.setBackgroundColor(Color.fromARGB(0, 0, 0, 0));
 
     }
 

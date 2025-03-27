@@ -22,7 +22,7 @@ public class Deck<T extends GameObject> extends GameObject{
         totalTransformation = new Transformation(
                 new Vector3f(0, 0, 0),              //Translation
                 new AxisAngle4f((float) Math.PI, 0, 0, 1),  //Left Rotation
-                new Vector3f(1, 1, 1),              //Scale
+                new Vector3f(0.75f, 0.75f, 0.75f),              //Scale
                 new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
     }
 
@@ -32,7 +32,7 @@ public class Deck<T extends GameObject> extends GameObject{
         totalTransformation = new Transformation(
                 new Vector3f(0, 0, 0),              //Translation
                 new AxisAngle4f((float) Math.PI, 0, 0, 1),  //Left Rotation
-                new Vector3f(1, 1, 1),              //Scale
+                new Vector3f(0.75f, 0.75f, 0.75f),              //Scale
                 new AxisAngle4f(0, 0, 0, 0)); //Right Rotation
 
     }

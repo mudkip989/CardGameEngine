@@ -5,6 +5,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.scheduler.*;
 import org.bukkit.util.Vector;
 import us.mudkip989.mods.cge.*;
 import us.mudkip989.mods.cge.event.*;
@@ -37,6 +38,7 @@ public class Blackjack extends Game {
     //Game
     private Boolean active = false;
     private Boolean started = false;
+    private Boolean drawing = false;
     private Integer timer = 0;
     private List<GameObject> randoObjects;
     private Interactive hitButton;
@@ -44,6 +46,7 @@ public class Blackjack extends Game {
     private Interactive standButton;
     private TextObject standText;
     private Interactive startButton;
+    private int DrawRound = 0;
 
 
     //debug things
@@ -117,7 +120,7 @@ public class Blackjack extends Game {
             Location temploc = shiftLocationForwards(rotorloc.clone(), 2f);
             temploc.setYaw(temploc.getYaw()+180);
             hands.add(new Hand<>(temploc));
-            new Node(temploc);
+//            new Node(temploc);
 
 //            //templocation
 //            Location temploc = rotorloc.clone();
@@ -174,6 +177,7 @@ public class Blackjack extends Game {
             hand.add(card);
         }
         hand.updateCardPostitions();
+        deck.updateCardPostitions();
 //        Card card = (Card) deck.draw();
 //        if (card != null) {
 //            hands.stream().filter(hand -> hand.owner.equals(player)).forEach(hand -> hand.add((Card) deck.draw()));
@@ -224,18 +228,26 @@ public class Blackjack extends Game {
             resetGame();
             //Reset game
             this.active = false;
+            this.started = false;
 
             return;
         }
 
-        //if game is inactive and start pressed, reset all decks/hands, set timer
+        //if game is inactive and start pressed, reset all decks/hands, set timer, setDrawAmounts
         if (!this.active && this.started) {
             resetGame();
-            timer = 60;
+            timer = 20;
             this.active = true;
             this.started = false;
+//            this.drawing = true;
+            
 
         }
+
+        
+
+
+
 
         //if game is active, and players all stand, tick timer.
         if (this.active && isStand.values().stream().allMatch(state -> state)) {
@@ -311,7 +323,7 @@ public class Blackjack extends Game {
             case DRAW -> {
                 if(players.contains(player)) {
                     player.sendMessage(Component.text(isPlaying.get(seating.get(player)) + " : " + seating.get(player)));
-                    if(isPlaying.get(seating.get(player))) {
+                    if(isPlaying.get(seating.get(player)) && !isStand.get(player) && !this.drawing) {
                         dealCard(player);
                         player.sendMessage("You were dealt a card.");
                     }
