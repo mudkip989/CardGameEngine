@@ -6,10 +6,12 @@ import org.bukkit.inventory.*;
 import org.bukkit.util.*;
 import org.joml.*;
 import us.mudkip989.mods.cge.*;
+import us.mudkip989.mods.cge.object.datatypes.*;
+import us.mudkip989.mods.cge.object.tags.*;
 
 import java.util.*;
 
-public class Card extends GameObject {
+public class Card extends GameObject implements Clickable {
 
     private ItemDisplay card;
     private ItemStack cardItem;
@@ -72,11 +74,17 @@ public class Card extends GameObject {
     @Override
     public void setTransform(Transformation trans){
         card.setTransformation(trans);
+        trans.
     }
 
     @Override
     public void remove() {
         card.remove();
         super.remove();
+    }
+
+    @Override
+    public Hitbox getHitBox() {
+        return null;
     }
 }

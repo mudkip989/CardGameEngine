@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.*;
 import us.mudkip989.mods.cge.event.*;
 import us.mudkip989.mods.cge.event.EventListener;
-import us.mudkip989.mods.cge.example.*;
+
 import us.mudkip989.mods.cge.object.*;
 
 import java.util.*;

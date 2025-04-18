@@ -7,6 +7,12 @@ import us.mudkip989.mods.cge.*;
 import java.util.*;
 
 public class Interactive extends GameObject{
+    /*
+    Steps for new Interaction logic:
+    1. Get player look ray
+    2. Get list of clickable objects
+    3. Filter by
+     */
 
     public Interaction interaction;
 
